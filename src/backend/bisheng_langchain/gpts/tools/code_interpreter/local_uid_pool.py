@@ -14,7 +14,10 @@ reclaimed, while markers of other live workers on the same host are left alone.
 
 from __future__ import annotations
 
-import fcntl
+try:
+    import fcntl
+except ImportError:  # Windows: uid isolation is unsupported; keep the module importable.
+    fcntl = None
 import os
 import shutil
 import stat
@@ -210,7 +213,8 @@ def _pool_lock(marker_dir: str):
     """
     fd = os.open(os.path.join(marker_dir, _LOCK_NAME), os.O_RDWR | os.O_CREAT | os.O_NOFOLLOW, 0o600)
     try:
-        fcntl.flock(fd, fcntl.LOCK_EX)
+        if fcntl is not None:
+            fcntl.flock(fd, fcntl.LOCK_EX)
         yield
     finally:
         os.close(fd)

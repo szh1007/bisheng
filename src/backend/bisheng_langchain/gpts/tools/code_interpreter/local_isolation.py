@@ -368,7 +368,7 @@ def _make_run_dir(run_root: str, uid: int) -> str:
 WORK_SUBDIRS = (OUTPUT_DIR_NAME, SCRATCH_DIR_NAME)
 
 
-def ensure_work_subdirs(run_dir: str, uid: int | None, chown: Callable[[str, int, int], None] = os.lchown) -> None:
+def ensure_work_subdirs(run_dir: str, uid: int | None, chown: Callable[[str, int, int], None] | None = None) -> None:
     """Create ``output/`` and ``scratch/`` in ``run_dir`` before the script runs.
 
     The container runner creates both before each exec, so a first write to
@@ -385,7 +385,7 @@ def ensure_work_subdirs(run_dir: str, uid: int | None, chown: Callable[[str, int
         except FileExistsError:
             continue
         if uid is not None:
-            chown(path, uid, uid)
+            (chown or os.lchown)(path, uid, uid)
 
 
 def _write_script(path: str, code: str, uid: int) -> None:
