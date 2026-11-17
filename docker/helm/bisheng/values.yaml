@@ -62,7 +62,7 @@ frontend:
     type: ClusterIP
     port: 3001
     # Client SPA (base /workspace). 0 disables the extra listen/Service port.
-    clientPort: 4001
+    clientPort: 14001
     clientNodePort: null
     # Bind the node host to clientPort (single-node / no Ingress). Empty = off.
     clientHostPort: null

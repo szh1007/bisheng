@@ -1,7 +1,6 @@
 {
   "extends": "../config/tsconfig.base.json",
   "compilerOptions": {
-    "baseUrl": ".",
     "plugins": [
       {
         "name": "typescript-strict-plugin"
@@ -10,7 +9,7 @@
     "strict": false,
     "noFallthroughCasesInSwitch": true,
     "paths": {
-      "@/*": ["src/*"]
+      "@/*": ["./src/*"]
     }
   },
   "include": ["src"]

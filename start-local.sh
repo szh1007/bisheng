@@ -64,20 +64,20 @@ command -v pnpm >/dev/null 2>&1 || fail "pnpm not found. Run: npm i -g pnpm@9.15
 # ---- local environment -----------------------------------------------------
 export PYTHONPATH="$ROOT/src/backend${PYTHONPATH:+:$PYTHONPATH}"
 export BISHENG_GATEWAY_HMAC_SECRET="${BISHENG_GATEWAY_HMAC_SECRET:-}"
-export BS_MILVUS_CONNECTION_ARGS='{"host":"127.0.0.1","port":"19530","user":"","password":"","secure":false}'
+export BS_MILVUS_CONNECTION_ARGS='{"host":"127.0.0.1","port":"29530","user":"","password":"","secure":false}'
 export BS_MILVUS_IS_PARTITION=true
 export BS_MILVUS_PARTITION_SUFFIX=1
-export BS_ELASTICSEARCH_URL=http://127.0.0.1:9200
+export BS_ELASTICSEARCH_URL=http://127.0.0.1:19200
 export BS_ELASTICSEARCH_SSL_VERIFY='{}'
 export BS_MINIO_SCHEMA=false
 export BS_MINIO_CERT_CHECK=false
-export BS_MINIO_ENDPOINT=127.0.0.1:9100
-export BS_MINIO_SHAREPOINT=127.0.0.1:9100
+export BS_MINIO_ENDPOINT=127.0.0.1:19100
+export BS_MINIO_SHAREPOINT=127.0.0.1:19100
 export BS_MINIO_ACCESS_KEY=minioadmin
 export BS_MINIO_SECRET_KEY=minioadmin
 
 # ---- port checks -----------------------------------------------------------
-for port in 7860 3001 4001; do
+for port in 17860 13001 14001; do
   if is_listening "$port"; then
     fail "port $port is already in use. Stop the existing process (or the Docker app containers) first."
   fi
@@ -100,15 +100,15 @@ cleanup() {
 trap cleanup INT TERM EXIT
 
 # ---- start -----------------------------------------------------------------
-echo "Starting backend   -> http://localhost:7860"
-( cd "$ROOT/src/backend" && "$PY" -m uvicorn bisheng.main:app --host 0.0.0.0 --port 7860 --workers 1 --reload ) > "$BACKEND_LOG" 2>&1 &
+echo "Starting backend   -> http://localhost:17860"
+( cd "$ROOT/src/backend" && "$PY" -m uvicorn bisheng.main:app --host 0.0.0.0 --port 17860 --workers 1 --reload ) > "$BACKEND_LOG" 2>&1 &
 BACKEND_PID=$!
 
-echo "Starting platform  -> http://localhost:3001"
+echo "Starting platform  -> http://localhost:13001"
 ( cd "$ROOT/src/frontend" && pnpm dev:platform ) > "$PLATFORM_LOG" 2>&1 &
 PLATFORM_PID=$!
 
-echo "Starting client    -> http://localhost:4001/workspace/__dev/login"
+echo "Starting client    -> http://localhost:14001/workspace/__dev/login"
 ( cd "$ROOT/src/frontend" && pnpm dev:client ) > "$CLIENT_LOG" 2>&1 &
 CLIENT_PID=$!
 
@@ -136,9 +136,9 @@ Logs:
 $([ "$WITH_WORKERS" = true ] && echo "  $WORKERS_LOG")
 
 URLs:
-  Platform: http://localhost:3001
-  Client:   http://localhost:4001/workspace/__dev/login
-  API:      http://localhost:7860/health
+  Platform: http://localhost:13001
+  Client:   http://localhost:14001/workspace/__dev/login
+  API:      http://localhost:17860/health
 
 Press Ctrl+C to stop everything this script started.
 EOF

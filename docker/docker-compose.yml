@@ -66,7 +66,7 @@ services:
     image: ${MYSQL_IMAGE:?set MYSQL_IMAGE in docker/.env (see .env.example)}
     
     ports:
-      - "3306:3306"
+      - "13306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: "1234"  # 数据库密码，如果修改需要同步修改bisheng/congfig/config.yaml配置database_url的mysql连接密码
       MYSQL_DATABASE: bisheng
@@ -116,9 +116,9 @@ services:
       OPENFGA_RESOLVE_NODE_LIMIT: "${OPENFGA_RESOLVE_NODE_LIMIT:-25}"
       OPENFGA_LIST_OBJECTS_MAX_RESULTS: 1000
     ports:
-      - "8080:8080"
-      - "8081:8081"
-      - "2112:2112"
+      - "18080:8080"
+      - "18081:8081"
+      - "12112:2112"
     depends_on:
       openfga-migrate:
         condition: service_completed_successfully
@@ -130,7 +130,7 @@ services:
     container_name: bisheng-redis
     image: ${REDIS_IMAGE:?set REDIS_IMAGE in docker/.env (see .env.example)}
     ports:
-      - "6379:6379"
+      - "16379:6379"
     environment:
       TZ: Asia/Shanghai
     volumes:
@@ -148,7 +148,7 @@ services:
     container_name: bisheng-backend
     image: ${BISHENG_BACKEND_IMAGE:?set BISHENG_BACKEND_IMAGE in docker/.env (see .env.example)}
     ports:
-      - "7860:7860"
+      - "17860:7860"
     environment:
       <<: *runtime-platform-env
       TZ: Asia/Shanghai
@@ -253,7 +253,7 @@ services:
     container_name: bisheng-frontend
     image: ${BISHENG_FRONTEND_IMAGE:?set BISHENG_FRONTEND_IMAGE in docker/.env (see .env.example)}
     ports:
-      - "3001:3001"
+      - "13001:3001"
     environment:
       TZ: Asia/Shanghai
     volumes:
@@ -268,8 +268,8 @@ services:
     image: ${ELASTICSEARCH_IMAGE:?set ELASTICSEARCH_IMAGE in docker/.env (see .env.example)}
     user: root
     ports:
-      - "9200:9200"
-      - "9300:9300"
+      - "19200:9200"
+      - "19300:9300"
     environment:
       TZ: Asia/Shanghai
     volumes:
@@ -310,8 +310,8 @@ services:
     #   9001 - admin console. Published for LAN access; put it behind TLS or
     #          restrict it to the loopback interface in production.
     ports:
-      - "9100:9000"
-      - "9101:9001"
+      - "19100:9000"
+      - "19101:9001"
     volumes:
       - /etc/localtime:/etc/localtime:ro
       - ${DOCKER_VOLUME_DIRECTORY:-.}/data/milvus-minio:/minio_data
@@ -347,8 +347,8 @@ services:
       timeout: 20s
       retries: 3
     ports:
-      - "19530:19530"
-      - "9091:9091"
+      - "29530:19530"
+      - "19091:9091"
     depends_on:
       - etcd
       - minio

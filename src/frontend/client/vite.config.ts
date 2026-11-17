@@ -128,8 +128,8 @@ export default defineConfig(({ command, mode }) => {
     },
     server: {
       host: '0.0.0.0',
-      port: 4001,
-      // Pin to 4001: fail loudly if the port is taken instead of drifting to 4002+.
+      port: 14001,
+      // Pin to 14001: fail loudly if the port is taken instead of drifting to 14002+.
       strictPort: true,
       proxy: {
         '^(/workspace)?/bisheng': {

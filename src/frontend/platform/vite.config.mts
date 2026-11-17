@@ -315,7 +315,7 @@ export default defineConfig(({ command, mode }) => {
     },
     server: {
       host: '0.0.0.0',
-      port: 3001,
+      port: 13001,
       strictPort: true,
       proxy: {
         ...proxyTargets,
